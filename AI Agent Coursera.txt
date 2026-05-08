@@ -1,0 +1,56 @@
+outline
+1- theory
+2- framework
+3- projects
+
+
+week -> 1
+AI agents are programs where llm outputs control the workflow
+
+in practice, describes an ai solution that involves any or all of these 
+1 -> multiple llm calls
+2 -> llms with ability to use tools
+3 -> an environment where llms interact
+4 -> a planner to coordinate activities
+5 -> autonomy
+
+
+anthropic distinguishes two types:
+
+workflows are systems where llms and tools are orchestrated through predefined code paths
+
+agents are systems where llms dynamically direct their own processes and tool usage, maintaining control over how they accomplish task
+
+
+
+workflow design patterns
+1-> prompt chaining 
+2-> routing
+3-> parallelization (code decides the flow)
+4-> orchestrator worker (llm decides the flow)
+5-> evaluator optimizer
+
+agents
+1-> open ended
+2-> feedback loops
+3-> no fixed path
+
+risks of agent frameworks
+1-> unpredictable path
+2-> unpredictable output
+3-> unpredictable costs
+4-> monitor
+5-> guardrails
+
+agentic ai framework
+no framework
+MCP(modal context protocol)
+openai agents sdk
+crew ai
+langraph
+autogen
+
+resources ->  
+
+
+

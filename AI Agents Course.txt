@@ -1,0 +1,266 @@
+AI Agents Course
+
+What is an agent?
+Abstract
+An Agent is an AI-driven system that uses a core AI model to reason, plan, and act within its environment to achieve a user-defined objective, combining thinking (brain) and tool-enabled actions (body) across a spectrum of agency from simple processing to multi-agent workflows.
+
+Key Points
+An Agent integrates reasoning, planning, and action execution to fulfill tasks.
+The Agent comprises two main parts: the Brain (AI model) and the Body (capabilities/tools).
+Agency varies along a spectrum from non-impactful outputs to multi-agent, iterative control.
+Large Language Models (LLMs) are the most common core models for Agents, often used with tools.
+Tools extend the LLM's capabilities, enabling actions beyond text generation (e.g., image generation, emailing).
+Actions and Tools are distinct concepts; Actions may involve multiple Tools.
+Agents enable practical, real-life applications like personal assistants, customer service chatbots, and dynamic NPCs in games.
+The quality and design of Tools significantly influence the Agent’s performance and usefulness.
+
+
+What an LLM is?
+
+Large Language Models are AI models that excel at understanding and generating human language.
+They are trained on vast text data and typically built on Transformer architecture.
+Common types of transformers: Encoders, Decoders, and Seq2Seq (Encoder–Decoder).
+Most LLMs today are decoder-based with billions of parameters.
+Transformer types and examples
+
+Encoders: e.g., BERT. Use: text classification, semantic search, NER.
+Decoders: e.g., GPT-4. Use: text generation, chat, code generation.
+Seq2Seq: e.g., T5, BART. Use: translation, summarization, paraphrasing.
+Notable models mentioned: GPT-4 (OpenAI), Llama 3 (Meta), SmolLM2 (Hugging Face), Gemma (Google), Mistral.
+Core objective and tokenization
+
+The primary objective of an LLM is to predict the next token given a sequence of previous tokens.
+Tokens are sub-word units rather than whole words; vocabulary sizes can be in the tens of thousands.
+Special tokens exist to open/close sequences, indicate the end of a turn or instruction, etc.
+Special tokens
+
+Each model has its own set of special tokens (EOS, end of sequence, end of turn, etc.).
+Examples: GPT-4 uses <|endoftext|>, Llama 3 uses <|eot_id|>, SmolLM2 uses <|im_end|>, Gemma uses <end_of_turn>.
+These tokens structure generation and input prompts.
+Autoregressive decoding and attention
+
+LLMs are autoregressive: output from one step becomes input for the next.
+They rely on attention mechanisms to weigh the importance of prior tokens when predicting the next one.
+Context length defines how many tokens the model can consider at once.
+Prompting and training
+
+Prompt design is crucial for guiding the model toward desired outputs.
+Training involves pre-training on large text corpora (self-supervised) to learn language structure, followed by fine-tuning for tasks like conversation or tool use.
+How to use LLMs
+
+Run locally if you have sufficient hardware, or use cloud/API solutions (e.g., Hugging Face Inference API).
+The course primarily demonstrates usage via Hugging Face Hub APIs, with later exploration of local runs.
+LLMs in AI Agents
+
+LLMs act as the “brain” of AI Agents, enabling instruction interpretation, context maintenance, planning, and tool usage decisions.
+Learning resources
+
+Links to related courses: free NLP course, Hugging Face NLP course.
+Hands-on elements include tokenizers in an interactive playground and decoding strategies (e.g., beam search).
+
+
+
+What are Messages and Special Tokens (Messages and Special Tokens.txt)?
+
+Chat templates bridge user-agent conversations and the LLM’s prompt formatting.
+User interactions with chat interfaces are translated into a single formatted prompt fed to the model; the model doesn’t retain memory across turns in the UI—it processes the concatenated prompt each time.
+Chat templates standardize how multi-turn conversations are serialized into prompts, accommodating differences in special tokens across models.
+System messages (system prompts) define persistent behavior for the model (e.g., high-level role, available tools, formatting guidelines).
+Conversations consist of alternating user and assistant messages; chat templates help preserve context across turns and maintain coherence.
+Example formats show how various models format the same conversation into prompts, including:
+SmolLM2-style templates using <|im_start|> and <|im_end|> tokens.
+Llama 3’s or other models’ different delimiter schemes.
+Base models vs. instruct models:
+Base models are trained to predict the next token.
+Instruct models are fine-tuned for following instructions and engaging in conversations.
+Chat templates help standardize prompts so base models can behave like instruct models.
+Using chat templates often involves tooling in transformers (e.g., apply_chat_template) to render the correct textual prompt from a structured message list.
+Practical guidance includes examples of converting a message history into a model-ready prompt and references to libraries and templates to handle formatting.
+Key takeaway: chat templates ensure consistency and proper formatting across models, enabling multi-turn conversations to be interpreted correctly by the LLM.
+
+
+
+
+what are tools?
+
+tools should consist of: 
+	A textual description of what the function does.
+	A Callable (something to perform an action).
+	Arguments with typings.
+	(Optional) Outputs with typings.
+
+Abstract
+The document explains AI Tools as functional add-ons for LLMs, detailing what tools are, why they are useful, how to design them, and how they integrate into an Agent via system prompts and tool-calling. It covers practical examples (e.g., a calculator tool, weather data retrieval), the structure of tool descriptions, and a code-driven approach using a Tool class and a decorator to automatically generate tool metadata, culminating in the Model Context Protocol (MCP) as a standard open interface for tools.
+
+Key Points
+Tools are functions provided to the LLM to perform real actions and achieve clear objectives.
+Practical tool examples include Web Search, Image Generation, Retrieval, and API Interfaces, each extending the LLM’s capabilities.
+A well-designed tool should complement the LLM’s strengths and compensate for its knowledge gaps or static training data.
+To use tools, the LLM is taught about them via textual descriptions embedded in the system prompt, enabling tool calls like call weather_tool('Paris').
+The tool-calling process is executed by the Agent behind the scenes, making the interaction appear seamless to the user.
+Tool descriptions should clearly specify what the tool does, its required inputs, and its outputs, often using precise formats like JSON or code-like structures.
+The document demonstrates a concrete calculator tool example, detailing inputs (a: int, b: int) and output (int).
+A Python-based Tool class formalizes tool metadata and behavior, including name, description, inputs, outputs, and a to_string method.
+A decorator-based approach (@tool) can auto-generate tool descriptions from Python functions using introspection (signature and docstrings).
+The system prompt can be auto-generated from tool descriptions, enabling scalable tool integration across frameworks.
+Model Context Protocol (MCP) provides a unified, open interface to standardize tool provision across LLMs and vendors, promoting reusability and security.
+
+
+
+
+
+
+
+Understanding AI Agents through the Thought-Action-Observation Cycle?????
+The document explains the Thought-Action-Observation (TAO) cycle as the core workflow of AI agents, detailing how agents think (reason), act by invoking tools, and observe tool feedback to iteratively refine their approach until goals are fulfilled. It uses Alfred, a weather agent, to illustrate how internal reasoning leads to tool calls (e.g., get_weather), how observations are incorporated into updated thoughts, and how the final response is produced, highlighting the loop's dynamic data retrieval, tool integration, and continuous adaptation.
+
+Key Points
+The AI agent workflow is a continuous Thought-Action-Observation cycle that repeats until the objective is achieved.
+Thought refers to the internal reasoning where the agent decides the next step based on the task and available tools.
+Action involves invoking tools with specific arguments to gather or execute necessary data.
+Observation is the feedback received from tools, which the agent uses to adjust its reasoning.
+The system prompt embeds the rules and guidelines that govern the agent’s behavior and the TAO cycle.
+Tools enable agents to access real-time data beyond static knowledge, enabling dynamic problem solving.
+Alfred, the Weather Agent, demonstrates how a user query triggers a structured TAO sequence to fetch current weather data and generate a final answer.
+The TAO cycle can re-enter at any step if observations reveal errors or incomplete data, ensuring robustness and accuracy.
+
+
+
+The document explains how an AI agent’s “thoughts” represent its internal reasoning and planning processes, letting it analyze prompt information, break down complex tasks into smaller steps, and continuously adjust decisions based on new observations. It introduces Chain-of-Thought (CoT) as a prompting technique that encourages step-by-step internal reasoning before answering, typically without using external tools. Finally, it presents the ReAct approach, which interleaves reasoning with actions and tool outputs via a Thought → Action → Observation cycle, making it well-suited for dynamic, multi-step, information-seeking tasks.
+
+Key Points
+Thoughts are the agent’s internal reasoning and planning signals used to solve tasks effectively.
+The agent uses its LLM capabilities to analyze information given in the prompt to inform decisions.
+Thoughts help the agent evaluate observations and determine the most appropriate next actions.
+Through thought-driven planning, the agent can decompose complex problems into manageable steps and refine plans as new info arrives.
+The document lists common thought types such as planning, analysis, decision-making, problem-solving, memory integration, self-reflection, goal setting, and prioritization.
+Chain-of-Thought (CoT) is a prompting method that guides step-by-step thinking to improve answers for logic and math, typically without external tools.
+ReAct combines reasoning and acting, interleaving internal thoughts with tool use and subsequent observations to handle complex tasks.
+ReAct follows a Thought → Action → Observation loop, enabling the agent to iteratively act based on tool results.
+A comparison highlights that CoT is best for internal tasks, while ReAct is best for tool-based, dynamic multi-step information gathering.
+The document notes that some newer models (e.g., Deepseek R1 or OpenAI o1) are trained to think before answering using structured reasoning tokens, which differs from ReAct/CoT as pure prompting strategies.
+It also clarifies that for function-calling–fine-tuned LLMs, the thought process may be optional, with details deferred to the Actions section.
+
+
+
+This section explains how AI agents perform actions—the concrete steps they take to interact with their environment, such as gathering information, using tools/APIs, manipulating interfaces or devices, and communicating with users. It distinguishes between JSON agents (actions specified in structured JSON, including function-calling as a specialized form) and code agents (actions represented as executable code blocks such as Python), highlighting the benefits and tradeoffs of each approach. A central implementation technique is the stop and parse approach, where the agent outputs a clearly structured action, halts generation once the action definition is complete, and allows an external parser to safely and reliably extract parameters for tool execution.
+
+Key Points
+Actions are the deliberate operations an AI agent executes to interact with its environment, bridging internal reasoning and real-world effects.
+Agents may perform information gathering by searching the web, querying databases, or retrieving documents.
+Agents use tool usage actions such as making API calls, running calculations, and executing code.
+Agents may directly perform environment interaction, including manipulating digital interfaces or controlling physical devices.
+Agents also handle communication by engaging with users in chat or collaborating with other agents.
+A JSON agent represents the intended action as machine-readable JSON, typically containing the tool name and parameters.
+A function-calling agent is a specialized variant of the JSON approach designed to invoke a designated function with extracted arguments.
+The stop and parse approach improves reliability by forcing the LLM to stop generating once the action is fully defined so output remains parseable.
+An external parser reads the formatted action, selects the correct tool/function, and extracts required parameters to prevent errors.
+A code agent outputs executable code blocks (often Python), offering greater expressiveness through loops/conditionals and supporting modular reuse.
+Executing LLM-generated code introduces security risks (e.g., prompt injection or harmful execution), so the document recommends using agent frameworks with built-in safeguards (like smolagents).
+The section concludes that actions prepare the agent for the next stage: using observations to capture environmental feedback for reflection and adaptation.
+
+
+This tutorial guides you through building and running your first coding agent using the lightweight smolagents library on a Hugging Face Space. You’ll duplicate a provided template, securely add your Hugging Face API token, and edit app.py to define tools (including examples like a dummy custom tool and a working timezone-time tool) and configure a CodeAgent with an LLM model. Finally, you’ll launch the agent with a Gradio UI, add additional tools (including hub-loaded ones like image generation), and share or showcase the result.
+
+Key Points
+The tutorial explains that agent frameworks like smolagents reduce the tedious work of building agents from scratch.
+smolagents centers on CodeAgent, which repeatedly thinks, acts (via code “tools”), and observes until producing a final answer.
+You begin by duplicating a starter Hugging Face Space template to your own profile, creating a local copy you can modify.
+You must add a secure secret named HF_TOKEN (with inference permission) so the Space can call model APIs.
+In app.py, tools are defined using the @tool decorator and should include clear input/output type hints and a docstring describing arguments.
+An example working tool, get_current_time_in_timezone, uses pytz and datetime to return the current time for a given IANA timezone string.
+The agent uses Qwen/Qwen2.5-Coder-32B-Instruct via InferenceClientModel, configured with parameters like max_tokens and temperature.
+The system prompt is loaded from an external prompts.yaml file, enabling easier customization and reuse.
+The template initially provides a non-functional setup (it doesn’t use tools yet), so your task is to add tools (pre-made or newly created).
+You can extend capabilities by loading tools from the Hub (e.g., agents-course/text-to-image) and then passing them into the agent’s tools list.
+The finished agent is served through GradioUI(agent).launch(), making it interactive in the Space.
+
+
+This module introduces Hugging Face’s smolagents as a lightweight framework for building effective AI agents, contrasting it with other open-source options to help you choose the right tool for your project. It covers core agent types—CodeAgents that generate Python code, ToolCallingAgents that rely on structured JSON/text for action execution, and Retrieval Agents that implement Retrieval-Augmented Generation (RAG) using vector stores and memory. The unit also explores how to orchestrate multi-agent systems and extend agent capabilities with vision-language models (VLMs) to build multimodal and web-browsing agents, demonstrated through Alfred’s returning storyline.
+
+Key Points
+smolagents is a Hugging Face library designed to support building capable AI agents in a lightweight way.
+The module emphasizes evaluating multiple frameworks (e.g., LlamaIndex, LangGraph) rather than defaulting to a single option.
+CodeAgents perform tasks by generating Python code instead of returning only text or JSON.
+ToolCallingAgents execute actions by producing JSON/text blobs that the system parses and interprets.
+Tools are foundational agent components, implemented via the Tool class or the @tool decorator.
+Retrieval Agents enable knowledge-base access using vector stores and RAG patterns while preserving conversational context via memory.
+Retrieval strategies can include fallback mechanisms to improve robustness when information is missing or retrieval fails.
+Multi-agent systems require careful orchestration, combining agents with complementary roles (e.g., web search plus code execution) for reliability and efficiency.
+Vision and browser agents extend capability with VLMs, enabling multimodal reasoning and information extraction from the web.
+
+
+
+
+This document explains why developers might choose smolagents, a lightweight yet powerful framework for building AI agents that can interact with the real world (e.g., search or image generation) through tool use. It highlights key advantages such as simplicity, flexible support for many LLM providers, a code-first approach for tool calling (reducing JSON parsing complexity), and seamless integration with the Hugging Face Hub (including Gradio Spaces as tools). It also clarifies when smolagents is the right fit—especially for quick experiments and straightforward application logic—while introducing its model integration options and multi-step agent types.
+
+Key Points
+smolagents is a framework for building AI agents with “agency,” enabling real-world interactions like tool-based searching or image generation.
+It supports the standard agent loop of thoughts generated from observations to produce actions that can be executed.
+The framework is designed for simplicity, using minimal abstractions so it’s easier to learn, adopt, and extend.
+Flexible LLM support lets developers work with many models by integrating through Hugging Face tools and external APIs.
+A code-first approach for Code Agents lets actions be written directly in code, avoiding the need to parse JSON for tool execution.
+smolagents integrates smoothly with the Hugging Face Hub, enabling use of Gradio Spaces as tools.
+It is best suited for scenarios needing a lightweight solution, fast experimentation, and straightforward application logic.
+smolagents primarily uses multi-step agents where each step includes one thought followed by one tool call and execution.
+Besides CodeAgent, it also supports ToolCallingAgent, which writes tool calls in JSON.
+Tool definitions are standardized using a Python @tool decorator wrapping a function or a Tool class.
+Model integration includes multiple ready-made classes such as TransformersModel, InferenceClientModel, LiteLLMModel, OpenAIServerModel, and AzureOpenAIServerModel.
+
+
+
+
+Abstract
+The document provides a comprehensive guide on using tools within the smolagents framework, explaining how tools function as interfaces for LLMs to perform actions. It details two primary methods for creating custom tools: the @tool decorator for simple functions and subclassing the Tool class for more complex functionality, with practical examples like a catering service lookup and a superhero party theme generator. Additionally, it covers the sharing of tools on the Hugging Face Hub, and the importing of tools from various sources including the Hub, Hugging Face Spaces, LangChain, and MCP servers to extend an agent's capabilities.
+
+Key Points
+Tools in smolagents are defined by a name, description, input types, and output type to enable LLMs to interact with external functions.
+The @tool decorator is the recommended method for creating simple tools by using Python function attributes and docstrings.
+Complex tools can be built by subclassing the Tool class, requiring specification of name, description, inputs, output_type, and a forward method.
+smolagents includes a default toolbox with pre-built tools such as the PythonInterpreterTool and DuckDuckGoSearchTool.
+Custom tools can be shared with the community by uploading them to the Hugging Face Hub using the push_to_hub() method.
+Pre-built tools from the Hugging Face Hub can be imported using the load_tool() function for easy integration.
+Hugging Face Spaces can be imported as tools via Tool.from_space(), allowing agents to connect to community Gradio apps.
+LangChain tools can be integrated into smolagents workflows using the Tool.from_langchain() method for advanced functionalities.
+Tools from MCP servers can be loaded into a ToolCollection object, enabling access to hundreds of community servers for various tasks.
+
+
+Abstract
+This document explains how Agentic Retrieval-Augmented Generation (RAG) systems enhance traditional RAG by combining autonomous agents with dynamic knowledge retrieval, enabling intelligent control over search and generation processes. By employing strategies like query reformulation, multi-step retrieval, and result validation, these agents can overcome the limitations of single-retrieval systems to deliver more accurate and comprehensive responses. The guide provides practical implementations using tools like DuckDuckGo for web search and a custom BM25 retriever for specialized knowledge bases, with examples focused on planning a luxury superhero-themed party.
+
+Key Points
+Agentic RAG improves upon traditional RAG by allowing agents to autonomously reformulate queries and perform multiple retrieval steps for more precise results.
+Traditional RAG systems are limited by relying on a single retrieval step based on direct semantic similarity, which can miss relevant information.
+An implementation using DuckDuckGoSearchTool demonstrates how an agent can analyze a request, retrieve information, synthesize it into a plan, and store it for future use.
+Custom knowledge base tools, such as a BM25 retriever, enable specialized semantic searches within predefined documentation or databases.
+Enhanced retrieval capabilities include query reformulation, decomposition, expansion, reranking, multi-step retrieval, and source integration.
+Memory systems within agentic RAG help maintain conversation context and avoid redundant retrievals, improving efficiency over time.
+Result validation ensures that retrieved content is relevant and accurate before it is included in the final generated response.
+
+
+Abstract
+Multi-agent systems significantly enhance the ability to solve complex tasks by delegating specialized roles—such as a Manager Agent, Web Search Agent, and Code Interpreter Agent—to different AI entities, thereby improving modularity, scalability, and cost-efficiency. The document provides a practical demonstration using the smolagents framework, where a manager agent coordinates a web agent to solve a multi-step problem: finding global Batman filming locations and supercar factories, calculating cargo travel times, and generating a spatial map. This approach showcases how separating agent memories and responsibilities reduces context window usage and token costs compared to relying on a single monolithic agent.
+
+Key Points
+Multi-agent systems improve task performance by distributing specialized roles like management, code execution, and web search among different agents.
+A typical multi-agent setup includes a Manager Agent for task delegation, a Code Interpreter Agent for running code, and a Web Search Agent for information retrieval.
+Using multiple agents allows for a separation of memories, which reduces the number of input tokens per step and lowers both latency and cost.
+In a concrete example, a web agent was tasked with finding Batman filming locations and supercar factories, while the manager agent focused on aggregating the data and plotting a spatial map.
+The manager agent utilized a planning_interval to plan its steps ahead, improving efficiency for complex, multi-step tasks.
+A custom tool called calculate_cargo_travel_time was developed, using the haversine formula to compute great-circle flight times for cargo planes.
+The final output of the multi-agent system was a scatter map, saved as saved_map.png, with points colored by travel time to represent the geographical data.
+
+
+Abstract
+The document details how to build vision-capable agents using the smolagents library, which empowers agents to process and interpret visual information through Vision-Language Models (VLMs). It demonstrates two primary approaches for integrating images: passing them at the start for static comparison tasks, and dynamically retrieving them via web browsing for more complex identity verification. A practical example is provided, showing how a "butler" agent named Alfred can use these techniques to verify the identities of party guests, such as identifying an impersonator like The Joker, by combining tools for web navigation and screenshot capture.
+
+Key Points
+The smolagents library provides built-in support for Vision-Language Models (VLMs), enabling agents to process and interpret images for tasks beyond text.
+Images can be provided to an agent at the start of its execution as task_images, allowing for static analysis throughout the agent's process.
+A practical use case involves using a VLM agent to compare a visitor's image against a known dataset to detect impersonators, like The Joker posing as Wonder Woman.
+For guests not in a database, agents can dynamically retrieve images and information from external sources, such as browsing the web.
+The agent's dynamic workflow logs visual information at different stages, including TaskStep for initial images and ActionStep for screenshots captured during browsing.
+Browser automation tools like Selenium and Helium are essential for building agents that can navigate the web, take screenshots, and search for textual information.
+Custom functions, such as save_screenshot, can be used as step callbacks to capture the browser's current state and store it for the VLM agent to process.
+The step_callback mechanism allows the agent to store screenshots and current URL information at the end of each action step during its execution.
+Special navigation instructions (helium_instructions) are included in the task prompt to effectively guide the agent while browsing the web.

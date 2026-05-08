@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #1a1a1a; font-size: 11px; line-height: 1.5; }
+
+  .page { width: 210mm; min-height: 297mm; margin: 0 auto; padding: 14mm 14mm 12mm; background: #fff; }
+
+  /* HEADER */
+  .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2.5px solid #1a3a5c; padding-bottom: 10px; margin-bottom: 12px; }
+  .header-left h1 { font-size: 24px; font-weight: 700; color: #1a3a5c; letter-spacing: 0.5px; }
+  .header-left h2 { font-size: 12px; font-weight: 400; color: #4a7fa5; margin-top: 2px; letter-spacing: 0.3px; }
+  .header-right { text-align: right; font-size: 10px; color: #444; line-height: 1.8; }
+  .header-right a { color: #1a3a5c; text-decoration: none; }
+
+  /* SECTION */
+  .section { margin-bottom: 11px; }
+  .section-title { font-size: 10.5px; font-weight: 700; color: #1a3a5c; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #c8daea; padding-bottom: 3px; margin-bottom: 7px; }
+
+  /* SUMMARY */
+  .summary p { font-size: 10.5px; color: #333; line-height: 1.65; }
+
+  /* TWO COL LAYOUT */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* EXPERIENCE */
+  .exp-item { margin-bottom: 9px; }
+  .exp-header { display: flex; justify-content: space-between; align-items: baseline; }
+  .exp-title { font-weight: 700; font-size: 11px; color: #1a1a1a; }
+  .exp-date { font-size: 10px; color: #666; white-space: nowrap; }
+  .exp-company { font-size: 10.5px; color: #4a7fa5; font-weight: 600; }
+  .exp-type { font-size: 10px; color: #888; }
+  .exp-desc { font-size: 10px; color: #444; margin-top: 2px; line-height: 1.5; }
+
+  /* EDUCATION */
+  .edu-item { margin-bottom: 8px; }
+  .edu-degree { font-weight: 700; font-size: 11px; color: #1a1a1a; }
+  .edu-uni { font-size: 10.5px; color: #4a7fa5; font-weight: 600; }
+  .edu-meta { font-size: 10px; color: #666; }
+  .edu-detail { font-size: 10px; color: #444; margin-top: 3px; line-height: 1.6; }
+
+  /* PROJECTS */
+  .project-item { margin-bottom: 9px; }
+  .project-title { font-weight: 700; font-size: 11px; color: #1a1a1a; }
+  .project-stack { font-size: 10px; color: #4a7fa5; font-style: italic; margin-bottom: 2px; }
+  .project-desc { font-size: 10px; color: #444; line-height: 1.55; }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; }
+  .skill-row { display: flex; gap: 6px; align-items: flex-start; }
+  .skill-label { font-size: 10px; font-weight: 700; color: #1a3a5c; min-width: 90px; }
+  .skill-val { font-size: 10px; color: #333; }
+
+  /* COURSES */
+  .courses-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px 10px; }
+  .course-item { font-size: 9.5px; color: #444; padding: 1.5px 0; border-bottom: 0.5px solid #eef; }
+
+  /* DOCS TABLE */
+  .docs-table { width: 100%; border-collapse: collapse; }
+  .docs-table th { font-size: 10px; font-weight: 700; color: #1a3a5c; text-align: left; border-bottom: 1px solid #c8daea; padding: 3px 6px; }
+  .docs-table td { font-size: 10px; color: #333; padding: 3px 6px; border-bottom: 0.5px solid #eee; }
+  .badge-ok { background: #e6f4ea; color: #1e6d3a; padding: 1px 7px; border-radius: 10px; font-size: 9.5px; font-weight: 600; }
+
+  /* TRAITS */
+  .traits-list { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 16px; }
+  .trait-item { font-size: 10px; color: #333; padding: 2px 0; display: flex; gap: 5px; }
+  .trait-dot { color: #4a7fa5; font-weight: 700; }
+
+  /* LANGUAGES */
+  .lang-row { display: flex; gap: 20px; }
+  .lang-item { font-size: 10.5px; }
+  .lang-name { font-weight: 700; color: #1a1a1a; }
+  .lang-level { color: #666; }
+
+  /* PRINT */
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding: 10mm 12mm; width: 100%; }
+    .no-print { display: none; }
+  }
+
+  /* PRINT BUTTON */
+  .print-btn { position: fixed; top: 16px; right: 16px; background: #1a3a5c; color: #fff; border: none; padding: 9px 20px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; z-index: 999; }
+  .print-btn:hover { background: #0f2640; }
+
+  .divider { height: 1px; background: #eef2f7; margin: 4px 0 8px; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">⬇ Save as PDF</button>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>Nasir Shahzad</h1>
+      <h2>Flutter App Developer &nbsp;|&nbsp; Full Stack Developer</h2>
+    </div>
+    <div class="header-right">
+      <div>📞 0313-7576531</div>
+      <div>✉ nasirbhotta@gmail.com</div>
+      <div><a href="https://linkedin.com/in/me-bhotta">linkedin.com/in/me-bhotta</a></div>
+      <div><a href="https://github.com/NasirBhotta">github.com/NasirBhotta</a></div>
+      <div>📍 Islamabad, Pakistan</div>
+    </div>
+  </div>
+
+  <!-- PROFESSIONAL SUMMARY -->
+  <div class="section summary">
+    <div class="section-title">Professional Summary</div>
+    <p>BSc Computer Science graduate (COMSATS University Islamabad, CGPA 3.23, March 2026) with 1.5+ years of professional experience building production-grade cross-platform mobile and full-stack applications. Specializes in Flutter/Dart with deep expertise in clean architecture (MVVM + BLoC/GetX), Firebase, and REST APIs. Experienced in full-stack development with Node.js, Express.js, and MongoDB. Delivered three complete production-level projects — a ride-sharing app, an AI-powered learning platform, and a full-featured e-commerce system — each with real-time data, payment integration, role-based access, and offline-first architecture. Known for analytical depth, long-term architectural thinking, and continuous self-driven learning across mobile engineering, AI/ML, and DevOps.</p>
+  </div>
+
+  <!-- EDUCATION + EXPERIENCE SIDE BY SIDE -->
+  <div class="two-col">
+
+    <div>
+      <!-- EDUCATION -->
+      <div class="section">
+        <div class="section-title">Education</div>
+
+        <div class="edu-item">
+          <div class="edu-degree">Bachelor of Science in Computer Science</div>
+          <div class="edu-uni">COMSATS University Islamabad</div>
+          <div class="edu-meta">Feb 2022 – Jan 2026 &nbsp;|&nbsp; Islamabad, Pakistan</div>
+          <div class="edu-detail">
+            CGPA: <strong>3.23</strong> &nbsp;|&nbsp; 133 Credit Hours &nbsp;|&nbsp; Total CP: 429.34<br>
+            Reg No: CIIT/SP22-BCS-077/ISB &nbsp;|&nbsp; DOB: 09 Mar 2002<br>
+            Degree Conferred: <strong>15 March 2026</strong> (Officially Graduated)<br>
+            HEC Attested: <strong>07 April 2026</strong>
+          </div>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-degree">FSc Pre-Engineering</div>
+          <div class="edu-uni">Punjab Group of Colleges, Phalia Campus</div>
+          <div class="edu-meta">Apr 2019 – Feb 2021 &nbsp;|&nbsp; Phalia, Punjab</div>
+        </div>
+      </div>
+
+      <!-- WORK EXPERIENCE -->
+      <div class="section">
+        <div class="section-title">Work Experience</div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-title">Full Stack Flutter Developer</div>
+            <div class="exp-date">Jan 2025 – Feb 2026</div>
+          </div>
+          <div class="exp-company">CRIFLY &nbsp;<span class="exp-type">· Part-Time / Remote · 1 Year</span></div>
+          <div class="exp-desc">Built and maintained cross-platform Flutter applications with Firebase and REST API integrations. Delivered production features including real-time data sync, clean architecture patterns, and scalable backend systems. Reference: Waqar Hassan (CEO) — waqar@crifly.com</div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-title">Full Stack Flutter Developer</div>
+            <div class="exp-date">Jun 2024 – Sep 2024</div>
+          </div>
+          <div class="exp-company">CRIFLY &nbsp;<span class="exp-type">· Internship · 3 Months</span></div>
+          <div class="exp-desc">Demonstrated strong technical aptitude and professional conduct. Contributed to mobile development tasks using Flutter and Firebase under direct mentorship.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- SKILLS -->
+      <div class="section">
+        <div class="section-title">Technical Skills</div>
+        <div class="skills-grid">
+          <div class="skill-row"><span class="skill-label">Mobile:</span><span class="skill-val">Flutter, Dart</span></div>
+          <div class="skill-row"><span class="skill-label">State Mgmt:</span><span class="skill-val">BLoC, GetX, Riverpod</span></div>
+          <div class="skill-row"><span class="skill-label">Architecture:</span><span class="skill-val">MVVM, Clean Arch</span></div>
+          <div class="skill-row"><span class="skill-label">Backend:</span><span class="skill-val">Node.js, Express.js</span></div>
+          <div class="skill-row"><span class="skill-label">Databases:</span><span class="skill-val">Firebase, MongoDB, MySQL</span></div>
+          <div class="skill-row"><span class="skill-label">APIs:</span><span class="skill-val">REST, Google Maps</span></div>
+          <div class="skill-row"><span class="skill-label">Payments:</span><span class="skill-val">Stripe, Firebase CF</span></div>
+          <div class="skill-row"><span class="skill-label">Cloud:</span><span class="skill-val">Firebase, AWS EC2</span></div>
+          <div class="skill-row"><span class="skill-label">AI/ML:</span><span class="skill-val">RAG, NLP, Decision Trees</span></div>
+          <div class="skill-row"><span class="skill-label">Local Storage:</span><span class="skill-val">Hive, GetStorage</span></div>
+          <div class="skill-row"><span class="skill-label">DevOps:</span><span class="skill-val">Git, Docker, Linux</span></div>
+          <div class="skill-row"><span class="skill-label">Languages:</span><span class="skill-val">Dart, JS, Python, C#</span></div>
+          <div class="skill-row"><span class="skill-label">Other:</span><span class="skill-val">Agile, Flutter TTS</span></div>
+        </div>
+      </div>
+
+      <!-- LANGUAGES + PERSONAL -->
+      <div class="section">
+        <div class="section-title">Languages</div>
+        <div class="lang-row">
+          <div class="lang-item"><span class="lang-name">Urdu</span> <span class="lang-level">— Native</span></div>
+          <div class="lang-item"><span class="lang-name">Punjabi</span> <span class="lang-level">— Native</span></div>
+          <div class="lang-item"><span class="lang-name">English</span> <span class="lang-level">— Proficient</span></div>
+        </div>
+      </div>
+
+      <!-- KEY TRAITS -->
+      <div class="section">
+        <div class="section-title">Professional Traits</div>
+        <div class="traits-list">
+          <div class="trait-item"><span class="trait-dot">▸</span>Deeply analytical & curious</div>
+          <div class="trait-item"><span class="trait-dot">▸</span>Strong builder mindset</div>
+          <div class="trait-item"><span class="trait-dot">▸</span>Long-term architectural thinker</div>
+          <div class="trait-item"><span class="trait-dot">▸</span>Persistent problem-solver</div>
+          <div class="trait-item"><span class="trait-dot">▸</span>Self-driven learner</div>
+          <div class="trait-item"><span class="trait-dot">▸</span>Detail-oriented & honest</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section">
+    <div class="section-title">Portfolio Projects</div>
+    <div class="two-col">
+
+      <div>
+        <div class="project-item">
+          <div class="project-title">BrainBee — AI-Powered Learning App</div>
+          <div class="project-stack">Flutter · Node.js · Express.js · MongoDB · RAG/AI</div>
+          <div class="project-desc">AI-generated flashcards, quizzes, summaries & RAG-based chatbot. Adaptive personalized study plans, peer battles, leaderboards, badges, and gamification system. Scalable clean architecture with multi-role support (student/teacher/parent).</div>
+        </div>
+
+        <div class="project-item">
+          <div class="project-title">Ride Sharing App</div>
+          <div class="project-stack">Flutter · Firebase · Google Maps API · Flutter TTS</div>
+          <div class="project-desc">Full-stack app with three roles (rider, driver, admin). Real-time GPS tracking, polyline route visualization, turn-by-turn voice navigation. Smart radius-based ride matching, off-route rerouting, in-app messaging. Admin dashboard with live Firestore metrics and revenue analytics.</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="project-item">
+          <div class="project-title">E-Commerce App</div>
+          <div class="project-stack">Flutter · Firebase · Stripe · GetX · Hive</div>
+          <div class="project-desc">Separate customer and admin apps. Full shopping flow: auth, catalog, wishlist, cart, coupons, checkout, orders, notifications, profile. Offline-first with Hive/GetStorage. Stripe payments via Firebase Cloud Functions (PaymentSheet, saved cards, webhooks). Role-based admin dashboard with analytics, withdrawal approvals, risk alerts, audit logging.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NOTABLE COURSEWORK -->
+  <div class="section">
+    <div class="section-title">Notable Academic Coursework</div>
+    <div class="courses-grid">
+      <div class="course-item">Design & Analysis of Algorithms</div>
+      <div class="course-item">Machine Learning</div>
+      <div class="course-item">Parallel & Distributed Computing</div>
+      <div class="course-item">Artificial Intelligence</div>
+      <div class="course-item">Mobile Application Development</div>
+      <div class="course-item">Advanced Web Technologies</div>
+      <div class="course-item">Data Structures & Algorithms</div>
+      <div class="course-item">Software Engineering Concepts</div>
+      <div class="course-item">Compiler Construction</div>
+      <div class="course-item">Database Systems</div>
+      <div class="course-item">Computer Networks</div>
+      <div class="course-item">Information Security</div>
+      <div class="course-item">Theory of Automata</div>
+      <div class="course-item">Object Oriented Programming</div>
+      <div class="course-item">Senior Design Project I & II</div>
+    </div>
+  </div>
+
+  <!-- DOCUMENTS -->
+  <div class="section">
+    <div class="section-title">Certifications & Official Documents</div>
+    <table class="docs-table">
+      <thead>
+        <tr>
+          <th>Document</th>
+          <th>Issuing Authority</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>BSc Computer Science Degree</td>
+          <td>COMSATS University Islamabad</td>
+          <td>15 March 2026</td>
+          <td><span class="badge-ok">✓ Official</span></td>
+        </tr>
+        <tr>
+          <td>HEC Attested Transcript (CGPA 3.23)</td>
+          <td>Higher Education Commission Pakistan</td>
+          <td>07 April 2026</td>
+          <td><span class="badge-ok">✓ Attested</span></td>
+        </tr>
+        <tr>
+          <td>Experience Certificate — Full Stack Flutter Developer</td>
+          <td>CRIFLY (CEO: Waqar Hassan)</td>
+          <td>Jan 2025 – Feb 2026</td>
+          <td><span class="badge-ok">✓ Verified</span></td>
+        </tr>
+        <tr>
+          <td>Internship Certificate — Full Stack Flutter Developer</td>
+          <td>CRIFLY (CEO: Waqar Hassan)</td>
+          <td>Jun – Sep 2024</td>
+          <td><span class="badge-ok">✓ Verified</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>
