@@ -1,9 +1,9 @@
 import asyncio
 import os
 from typing import Dict
-
+from openai import AsyncOpenAI
 import sendgrid
-from agents import Agent, Runner, function_tool
+from agents import Agent, Runner, function_tool, OpenAIChatCompletionsModel, input_guardrail, GuardrailFunctionOutput
 from dotenv import load_dotenv
 from sendgrid.helpers.mail import Content, Email, Mail, To
 
@@ -31,7 +31,13 @@ instructions3 = (
     "You write concise, to the point cold emails."
 )
 
-# comment added to trigger a new commit and test the workflow
+
+# lets say we have to use other models here other than the openai, how we will do it, described here
+
+KIMI_BASE_URL = "https://integrate.api.nvidia.com/v1"
+kimi_client = AsyncOpenAI(base_url=KIMI_BASE_URL, api_key=os.environ.get("KIMI_API_KEY"))
+kimi_model = OpenAIChatCompletionsModel(openai_client=kimi_client, model="moonshotai/kimi-k2.6")
+
 
 
 sales_agent1 = Agent(

@@ -76,14 +76,33 @@ tools = [{"type": "function", "function": record_user_details_json},
 class Me:
 
     def __init__(self):
-        self.openai = OpenAI()
-        self.name = "Ed Donner"
+        # self.openai = OpenAI()
+        # self.name = "Ed Donner"
+        # reader = PdfReader("me/linkedin.pdf")
+        # self.linkedin = ""
+        # for page in reader.pages:
+        #     text = page.extract_text()
+        #     if text:
+        #         self.linkedin += text
+        # with open("me/summary.txt", "r", encoding="utf-8") as f:
+        #     self.summary = f.read()
+        self.openai = OpenAI(
+            api_key=os.getenv("KIMI_API_KEY"),
+            base_url="https://integrate.api.nvidia.com/v1"
+        )
+
+        self.name = "Nasir Bhotta"
+
         reader = PdfReader("me/linkedin.pdf")
+
         self.linkedin = ""
+
         for page in reader.pages:
             text = page.extract_text()
+
             if text:
                 self.linkedin += text
+
         with open("me/summary.txt", "r", encoding="utf-8") as f:
             self.summary = f.read()
 
@@ -116,7 +135,7 @@ If the user is engaging in discussion, try to steer them towards getting in touc
         messages = [{"role": "system", "content": self.system_prompt()}] + history + [{"role": "user", "content": message}]
         done = False
         while not done:
-            response = self.openai.chat.completions.create(model="gpt-4o-mini", messages=messages, tools=tools)
+            response = self.openai.chat.completions.create(model="moonshotai/kimi-k2.6", messages=messages, tools=tools, temperature=0.7, max_tokens=4096)
             if response.choices[0].finish_reason=="tool_calls":
                 message = response.choices[0].message
                 tool_calls = message.tool_calls
@@ -130,5 +149,5 @@ If the user is engaging in discussion, try to steer them towards getting in touc
 
 if __name__ == "__main__":
     me = Me()
-    gr.ChatInterface(me.chat, type="messages").launch()
+    gr.ChatInterface(me.chat).launch()
     
