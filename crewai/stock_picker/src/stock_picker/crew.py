@@ -3,7 +3,7 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from .tools.PSXScrapperTool import PushNotificationTool
+from .tools.push_tool import PushNotificationTool
 from .tools.psx_scraper_tool import PSXScraperTool
 from .tools.financial_screener_tool import FinancialScreenerTool
 
