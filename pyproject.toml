@@ -12,3 +12,8 @@ dependencies = [
     "python-dotenv",
     "requests",
 ]
+
+[tool.uv.workspace]
+members = [
+    "crewai/stock_picker",
+]

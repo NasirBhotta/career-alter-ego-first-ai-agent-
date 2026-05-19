@@ -84,3 +84,76 @@ deep research agent
 	-> websearch tool by openai sdk
 	-> filesearch tool by //
 	-> computer tool by  //
+
+pydantic -> a lib used for creating structured objects in python, it validates the objects(type of object)
+guardrails -> used for adding contrainsts over input and output of agent (for security)
+
+	-> we can use different agents using openai sdk, because it provides us with endpoints for other llms than openai llm
+	-> for this we create a openai client first then we create model and we feed that model into the agent
+
+	-> for using openai llm in openai sdk we dont have to create client we just have to provide model name it automatically creates client and then loads it
+
+	handoff-> handoffs means we give control to the other agent (for example we have a parent agent that is responsible for doing multi management and we have a child agent that is specific for doing a task so we give authority to child agent so that it can do on its own) 
+
+	-> we can also convert a agent into a tool for another agent
+
+	-> asyncio is very important in doing async tasks -> it creats couroutines that run in parallel to solve a problem in quick speed
+	-> we can also create tasks of asyncio that run in parallel
+
+
+---------- week 3 ---------
+
+Crew AI framework
+
+what it is?
+	-> a multiagent platform for deploying, running and monitoring agentic ai
+
+	-> crew ai studio -> no code/lo code product for designing multiagent solutions
+
+CrewAI System Overview
+
+CrewAI is an AI agent framework used to build and orchestrate multiple AI agents that can collaborate to solve tasks autonomously. The CrewAI ecosystem includes:
+
+CrewAI Enterprise → a paid platform for deploying, monitoring, and managing agents.
+CrewAI Studio → a low-code/no-code visual interface for building agent workflows.
+CrewAI Framework → the open-source Python framework developers use to create AI agent systems.
+
+The framework mainly supports two approaches:
+
+Crews
+A team-based autonomous system where multiple agents with different roles collaborate dynamically to solve complex problems. Best for creative, exploratory, and agentic tasks.
+Flows
+A structured and deterministic workflow system where tasks follow predefined steps and conditions. Best for controlled, auditable, and production-oriented processes.
+
+CrewAI focuses on multi-agent collaboration, task delegation, and autonomous problem solving, making it useful for building advanced AI applications such as research assistants, analysis systems, customer support agents, and automated business workflows.
+
+
+
+-> core concepts
+	Framework for building multi-agent AI systems
+	Uses Agents, Tasks, and Crews
+	Agent → AI with role, goal, backstory
+	Task → specific job given to an agent
+	Crew → group of agents + tasks working 	together
+	Execution types:
+		Sequential → step-by-step tasks
+		Hierarchical → manager AI assigns tasks
+		More structured than OpenAI Agents SDK
+		Supports YAML config to separate prompts from code
+
+
+CrewAI + LiteLLM + Project Setup (Very Short)
+
+CrewAI
+
+Uses LiteLLM to connect easily to multiple models (OpenAI, Claude, Gemini, Grok, local models)
+Model format: provider/model → easy switching between LLMs
+Projects are fully structured (not single files)
+Generated using: crewai create crew my_project
+Project includes:
+agents.yaml → agent configs
+tasks.yaml → task configs
+crew.py → agents + tasks + crew logic
+main.py → entry point to run project
+Run project using: crewai run
+Separates config, logic, and execution for clean architecture
